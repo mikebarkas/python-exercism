@@ -1,9 +1,15 @@
-from itertools import groupby
+import re
 
 
-def encode(input_string):
-    return [(len(list(g)), k) for k,g in groupby(input_string)]
+def encode(chars):
+    return ''.join([str(len(match[1]) + 1) + match[0]
+                    if match[1]
+                    else match[0]
+                    for match in re.findall(r'(.)(\1*)', chars)])
 
 
-def decode(lst):
-    return ''.join(c * n for n,c in lst)
+def decode(chars):
+    return ''.join([int(match[0]) * match[1]
+                    if match[0]
+                    else match[1]
+                    for match in re.findall(r'(\d*)(.)', chars)])
